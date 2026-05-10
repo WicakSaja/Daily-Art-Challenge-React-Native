@@ -1,29 +1,22 @@
 import React, { useState } from "react";
-
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
-
 import Header from "../components/Header";
 import ChallengeCard from "../components/ChallengeCard";
 import FeaturedCard from "../components/FeaturedCard";
 import CategoryList from "../components/CategoryList";
 import StartButton from "../components/StartButton";
-
 import { challenges } from "../data/challenges";
-
 import colors from "../styles/colors";
 
 export default function HomeScreen() {
-
   const [selectedCategory, setSelectedCategory] =
     useState("All");
-
   const [favorite, setFavorite] = useState([]);
-
   const categories = [
     "All",
     ...new Set(
@@ -50,17 +43,12 @@ export default function HomeScreen() {
     );
 
   const toggleFavorite = (id) => {
-
     if (favorite.includes(id)) {
-
       setFavorite(
         favorite.filter(item => item !== id)
       );
-
     } else {
-
       setFavorite([...favorite, id]);
-
     }
   };
   return (
@@ -71,13 +59,11 @@ export default function HomeScreen() {
         selectedCategory={selectedCategory}
         onSelectCategory={setSelectedCategory}
       />
-
       {featuredChallenge && (
         <View style={styles.featuredSection}>
           <Text style={styles.sectionTitle}>
             Featured Challenge
           </Text>
-
           <FeaturedCard
             title={featuredChallenge.title}
             category={featuredChallenge.category}
@@ -89,9 +75,7 @@ export default function HomeScreen() {
         <Text style={styles.sectionTitle}>
           All Challenges
         </Text>
-
         {regularChallenges.map((item) => (
-
           <ChallengeCard
             key={item.id}
             title={item.title}
@@ -117,16 +101,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
-
   featuredSection: {
     paddingHorizontal: 20,
     marginBottom: 30,
   },
-
   challengeSection: {
     paddingHorizontal: 20,
   },
-
   sectionTitle: {
     fontSize: 22,
     fontWeight: "bold",

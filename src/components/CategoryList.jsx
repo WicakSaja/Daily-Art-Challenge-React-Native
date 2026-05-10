@@ -1,28 +1,21 @@
 import React from "react";
-
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-
 export default function CategoryList({
   categories,
   selectedCategory,
   onSelectCategory,
 }) {
-
   return (
     <View style={styles.container}>
-
       {categories.map((category) => {
-
         const active =
           selectedCategory === category;
-
         return (
-
           <TouchableOpacity
             key={category}
             style={[
@@ -31,20 +24,15 @@ export default function CategoryList({
             ]}
             onPress={() =>
               onSelectCategory(category)
-            }
-          >
-
+            }>
             <Text
               style={[
                 styles.text,
                 active && styles.activeText,
-              ]}
-            >
+              ]}>
               {category}
             </Text>
-
           </TouchableOpacity>
-
         );
       })}
     </View>
@@ -60,23 +48,19 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     gap: 10,
   },
-
   button: {
     backgroundColor: "#E5E5E5",
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
   },
-
   activeButton: {
     backgroundColor: "#222",
   },
-
   text: {
     color: "#333",
     fontWeight: "500",
   },
-
   activeText: {
     color: "white",
   },

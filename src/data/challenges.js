@@ -8,7 +8,6 @@ export const challenges = [
       "https://images.unsplash.com/photo-1513364776144-60967b0f800f",
     isFeatured: true,
   },
-
   {
     id: 2,
     title: "Character Sketch",
