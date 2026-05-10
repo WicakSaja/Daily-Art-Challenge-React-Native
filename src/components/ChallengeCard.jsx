@@ -1,38 +1,106 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import colors from "../styles/colors";
 
-export default function ChallengeCard() {
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+
+export default function ChallengeCard({
+  title,
+  category,
+  level,
+  image,
+  isFavorite,
+  onFavorite,
+}) {
+
   return (
+
     <View style={styles.card}>
-      <Text style={styles.label}>Challenge Hari Ini</Text>
-      <Text style={styles.challenge}>Gambar "Dunia Impian"</Text>
-      <Text style={styles.desc}>
-        Gunakan imajinasimu untuk menggambar dunia versimu sendiri.
-      </Text>
+
+      <Image
+        source={{ uri: image }}
+        style={styles.image}
+      />
+
+      <View style={styles.content}>
+
+        <Text style={styles.category}>
+          {category}
+        </Text>
+
+        <Text style={styles.title}>
+          {title}
+        </Text>
+
+        <Text style={styles.level}>
+          Difficulty: {level}
+        </Text>
+
+        <TouchableOpacity
+          onPress={onFavorite}
+          style={styles.favoriteButton}
+        >
+
+          <Text style={styles.favoriteText}>
+            {isFavorite
+              ? "❤️ Favorited"
+              : "🤍 Favorite"}
+          </Text>
+
+        </TouchableOpacity>
+
+      </View>
+
     </View>
+
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.primary,
-    margin: 20,
-    padding: 20,
-    borderRadius: 15,
+    flexDirection: "row",
+    backgroundColor: "white",
+    borderRadius: 20,
+    overflow: "hidden",
+    marginBottom: 18,
   },
-  label: {
-    color: colors.white,
+
+  image: {
+    width: 120,
+    height: 120,
+  },
+
+  content: {
+    flex: 1,
+    padding: 14,
+    justifyContent: "center",
+  },
+
+  category: {
+    color: "#777",
     fontSize: 12,
   },
-  challenge: {
-    color: colors.white,
-    fontSize: 20,
+
+  title: {
+    fontSize: 18,
     fontWeight: "bold",
-    marginVertical: 5,
+    marginTop: 4,
   },
-  desc: {
-    color: colors.white,
-    fontSize: 13,
+
+  level: {
+    marginTop: 6,
+    color: "#666",
+  },
+
+  favoriteButton: {
+    marginTop: 12,
+  },
+
+  favoriteText: {
+    fontWeight: "600",
   },
 });

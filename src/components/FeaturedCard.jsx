@@ -1,64 +1,79 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
-import colors from "../styles/colors";
 
-export default function FeaturedCard() {
+import {
+  View,
+  Text,
+  ImageBackground,
+  StyleSheet,
+} from "react-native";
+
+export default function FeaturedCard({
+  title,
+  category,
+  image,
+}) {
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Featured Artwork</Text>
 
-      <View style={styles.card}>
-        <Image
-          source={{ uri: "https://picsum.photos/400/200" }}
-          style={styles.image}
-        />
+    <ImageBackground
+      source={{ uri: image }}
+      style={styles.card}
+      imageStyle={styles.image}
+    >
 
-        <View style={styles.content}>
-          <Text style={styles.artTitle}>Sunset Dream</Text>
-          <Text style={styles.artist}>by Artist Random</Text>
-        </View>
+      <View style={styles.overlay}>
+
+        <Text style={styles.badge}>
+          FEATURED TODAY
+        </Text>
+
+        <Text style={styles.category}>
+          {category}
+        </Text>
+
+        <Text style={styles.title}>
+          {title}
+        </Text>
+
       </View>
-    </View>
+
+    </ImageBackground>
+
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 20,
-    marginTop: 10,
-    marginBottom: 30,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
   card: {
-    backgroundColor: colors.white,
-    borderRadius: 15,
-    overflow: "hidden",
+    height: 280,
+    justifyContent: "flex-end",
+  },
 
-    // shadow (Android & iOS)
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-  },
   image: {
-    width: "100%",
-    height: 150,
+    borderRadius: 28,
   },
-  content: {
-    padding: 15,
+
+  overlay: {
+    padding: 24,
+    backgroundColor:
+      "rgba(0,0,0,0.35)",
+    borderRadius: 28,
   },
-  artTitle: {
-    fontSize: 16,
+
+  badge: {
+    color: "white",
+    fontSize: 12,
+    marginBottom: 8,
+    letterSpacing: 1,
+  },
+
+  category: {
+    color: "#E0E0E0",
+    marginBottom: 6,
+  },
+
+  title: {
+    color: "white",
+    fontSize: 30,
     fontWeight: "bold",
-    color: colors.text,
-  },
-  artist: {
-    fontSize: 13,
-    color: "#777",
-    marginTop: 5,
   },
 });
