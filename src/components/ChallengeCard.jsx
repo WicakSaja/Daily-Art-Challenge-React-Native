@@ -1,5 +1,13 @@
 import React from "react";
-import {View,Text,Image,TouchableOpacity,StyleSheet,} from "react-native";
+
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+
 export default function ChallengeCard({
   title,
   category,
@@ -8,71 +16,101 @@ export default function ChallengeCard({
   isFavorite,
   onFavorite,
 }) {
+
   return (
+
     <View style={styles.card}>
+
       <Image
         source={{ uri: image }}
         style={styles.image}
       />
+
       <View style={styles.content}>
-        <Text style={styles.category}>
-          {category}
-        </Text>
-        <Text style={styles.title}>
-          {title}
-        </Text>
-        <Text style={styles.level}>
-          Difficulty: {level}
-        </Text>
+
+        <View>
+
+          <Text style={styles.category}>
+            {category}
+          </Text>
+
+          <Text style={styles.title}>
+            {title}
+          </Text>
+
+          <Text style={styles.level}>
+            Difficulty: {level}
+          </Text>
+
+        </View>
+
         <TouchableOpacity
           onPress={onFavorite}
           style={styles.favoriteButton}
         >
+
           <Text style={styles.favoriteText}>
             {isFavorite
               ? "❤️ Favorited"
               : "🤍 Favorite"}
           </Text>
+
         </TouchableOpacity>
+
       </View>
+
     </View>
+
   );
 }
 
 const styles = StyleSheet.create({
+
   card: {
-    flexDirection: "row",
     backgroundColor: "white",
-    borderRadius: 20,
+    borderRadius: 24,
     overflow: "hidden",
-    marginBottom: 18,
   },
+
   image: {
-    width: 120,
-    height: 120,
+    width: "100%",
+    height: 180,
   },
+
   content: {
-    flex: 1,
-    padding: 14,
-    justifyContent: "center",
+    padding: 16,
+    minHeight: 150,
+    justifyContent: "space-between",
   },
+
   category: {
     color: "#777",
     fontSize: 12,
+    marginBottom: 6,
   },
+
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    marginTop: 4,
+    marginBottom: 8,
   },
+
   level: {
-    marginTop: 6,
     color: "#666",
+    fontSize: 14,
   },
+
   favoriteButton: {
-    marginTop: 12,
+    marginTop: 20,
+    alignSelf: "flex-start",
+    backgroundColor: "#F3F3F3",
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 20,
   },
+
   favoriteText: {
     fontWeight: "600",
   },
+
 });
