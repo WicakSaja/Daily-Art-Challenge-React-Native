@@ -7,6 +7,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1513364776144-60967b0f800f",
     isFeatured: true,
+    description: "Latihan melukis digital dengan berbagai teknik dan gaya.",
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
     isFeatured: false,
+    description: "Menggambar sketsa karakter untuk pemula.",
   },
 
   {
@@ -26,6 +28,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b",
     isFeatured: true,
+    description: "Ilustrasi pemandangan alam dengan detail tinggi.",
   },
 
   {
@@ -36,6 +39,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5",
     isFeatured: false,
+    description: "Mewarnai karakter anime dengan teknik digital.",
   },
 
   {
@@ -46,6 +50,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1517841905240-472988babdf9",
     isFeatured: true,
+    description: "Studi menggambar wajah manusia secara proporsional.",
   },
 
   {
@@ -56,6 +61,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df",
     isFeatured: false,
+    description: "Melukis pemandangan kota dengan perspektif dan cahaya.",
   },
 
   {
@@ -66,6 +72,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1496317899792-9d7dbcd928a1",
     isFeatured: false,
+    description: "Latihan teori warna untuk memperkuat pemahaman kombinasi warna.",
   },
 
   {
@@ -76,6 +83,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
     isFeatured: true,
+    description: "Menggambar lanskap fantasi dengan imajinasi bebas.",
   },
   {
     id: 9,
@@ -85,6 +93,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1509475826633-fed577a2c71b",
     isFeatured: false,
+    description: "Studi menggambar objek mati dengan pencahayaan alami.",
   },
 
   {
@@ -95,6 +104,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1519744792095-2f2205e87b6f",
     isFeatured: false,
+    description: "Latihan menggambar gesture tubuh secara cepat dan ekspresif.",
   },
 
   {
@@ -105,6 +115,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1496317899792-9d7dbcd928a1",
     isFeatured: false,
+    description: "Latihan membuat tekstur digital yang realistis.",
   },
 
   {
@@ -115,85 +126,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2",
     isFeatured: true,
+    description: "Membuat seri ilustrasi bertema tertentu secara konsisten.",
   },
 
-  {
-    id: 13,
-    title: "Poster Design",
-    category: "Design",
-    level: "Medium",
-    image:
-      "https://images.unsplash.com/photo-1503602642458-232111445657",
-    isFeatured: false,
-  },
-
-  {
-    id: 14,
-    title: "Concept Art",
-    category: "Concept",
-    level: "Hard",
-    image:
-      "https://images.unsplash.com/photo-1487014679447-9f8336841d58",
-    isFeatured: true,
-  },
-
-  {
-    id: 15,
-    title: "Animal Sketches",
-    category: "Sketch",
-    level: "Medium",
-    image:
-      "https://images.unsplash.com/photo-1501706362039-c6e8092d66f0",
-    isFeatured: false,
-  },
-
-  {
-    id: 16,
-    title: "Mixed Media Experiment",
-    category: "Mixed Media",
-    level: "Easy",
-    image:
-      "https://images.unsplash.com/photo-1545239351-1141bd82e8a6",
-    isFeatured: false,
-  },
-
-  {
-    id: 17,
-    title: "Urban Sketching",
-    category: "Landscape",
-    level: "Medium",
-    image:
-      "https://images.unsplash.com/photo-1467269204594-9661b134dd2b",
-    isFeatured: true,
-  },
-
-  {
-    id: 18,
-    title: "Master Study",
-    category: "Painting",
-    level: "Hard",
-    image:
-      "https://images.unsplash.com/photo-1506086679524-6a8d3e0f3c7f",
-    isFeatured: true,
-  },
-
-  {
-    id: 19,
-    title: "Flat Icon Set",
-    category: "Design",
-    level: "Easy",
-    image:
-      "https://images.unsplash.com/photo-1526322725220-4d5c7b68e6a6",
-    isFeatured: false,
-  },
-
-  {
-    id: 20,
-    title: "3D Modeling Basics",
-    category: "3D",
-    level: "Medium",
-    image:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475",
-    isFeatured: false,
-  },
 ];

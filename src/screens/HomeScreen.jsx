@@ -11,7 +11,6 @@ import Header from "../components/Header";
 import ChallengeCard from "../components/ChallengeCard";
 import FeaturedCard from "../components/FeaturedCard";
 import CategoryList from "../components/CategoryList";
-import StartButton from "../components/StartButton";
 
 import { challenges } from "../data/challenges";
 
@@ -119,16 +118,9 @@ export default function HomeScreen() {
             >
 
               <ChallengeCard
-                title={item.title}
-                category={item.category}
-                level={item.level}
-                image={item.image}
-                isFavorite={
-                  favorite.includes(item.id)
-                }
-                onFavorite={() =>
-                  toggleFavorite(item.id)
-                }
+                challenge={item}
+                isFavorite={favorite.includes(item.id)}
+                onFavorite={() => toggleFavorite(item.id)} 
               />
 
             </View>
@@ -138,8 +130,6 @@ export default function HomeScreen() {
         </ScrollView>
 
       </View>
-
-      <StartButton />
 
     </ScrollView>
 

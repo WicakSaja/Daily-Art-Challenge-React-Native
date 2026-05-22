@@ -14,6 +14,7 @@ export default function Header() {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    paddingTop: 65,
   },
   title: {
     fontSize: 24,

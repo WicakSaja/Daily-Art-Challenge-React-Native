@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -9,58 +9,48 @@ import {
 } from "react-native";
 
 export default function ChallengeCard({
-  title,
-  category,
-  level,
-  image,
+  challenge,
   isFavorite,
   onFavorite,
 }) {
 
+  const navigation = useNavigation();
+
   return (
-
     <View style={styles.card}>
-
       <Image
-        source={{ uri: image }}
+        source={{ uri: challenge.image }}
         style={styles.image}
       />
-
       <View style={styles.content}>
-
         <View>
-
           <Text style={styles.category}>
-            {category}
+            {challenge.category}
           </Text>
-
           <Text style={styles.title}>
-            {title}
+            {challenge.title}
           </Text>
-
           <Text style={styles.level}>
-            Difficulty: {level}
+            Difficulty: {challenge.level}
           </Text>
-
         </View>
-
         <TouchableOpacity
-          onPress={onFavorite}
-          style={styles.favoriteButton}
+          activeOpacity={0.9}
+          onPress={() =>
+            navigation.navigate(
+              "ChallengeDetail",
+              {
+                challenge: challenge,
+              }
+            )
+          }
         >
-
           <Text style={styles.favoriteText}>
-            {isFavorite
-              ? "❤️ Favorited"
-              : "🤍 Favorite"}
+            Detail
           </Text>
-
         </TouchableOpacity>
-
       </View>
-
     </View>
-
   );
 }
 

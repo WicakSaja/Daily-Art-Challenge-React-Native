@@ -25,10 +25,7 @@ export default function ExploreScreen() {
             style={styles.cardWrapper}
           >
             <ChallengeCard
-              title={item.title}
-              category={item.category}
-              level={item.level}
-              image={item.image}
+              challenge={item}
               isFavorite={false}
               onFavorite={() => {}}
             />
