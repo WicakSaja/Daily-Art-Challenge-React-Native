@@ -1,96 +1,105 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useCallback } from "react";
 import {
+  ScrollView,
   StyleSheet,
   Text,
   View,
-  Animated,
+  ActivityIndicator,
+  RefreshControl,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import Header from "../components/Header";
 import ChallengeCard from "../components/ChallengeCard";
 import FeaturedCard from "../components/FeaturedCard";
 import CategoryList from "../components/CategoryList";
-import { challenges } from "../data/challenges";
 import colors from "../styles/colors";
-
-const HEADER_HEIGHT = 90;
+import { getChallenges } from "../utils/api";
 
 export default function HomeScreen() {
+  const [challenges, setChallenges]             = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [favorite, setFavorite] = useState([]);
+  const [favorite, setFavorite]                 = useState([]);
+  const [loading, setLoading]                   = useState(true);
+  const [refreshing, setRefreshing]             = useState(false);
 
-  // Animated value untuk menangkap posisi scroll
-  const scrollY = useRef(new Animated.Value(0)).current;
-
-  // diffClamp membatasi nilai agar tetap di antara 0 dan HEADER_HEIGHT
-  const diffClampY = Animated.diffClamp(scrollY, 0, HEADER_HEIGHT);
-
-  // Header bergeser ke atas saat scroll turun, kembali saat scroll naik
-  const headerTranslateY = diffClampY.interpolate({
-    inputRange: [0, HEADER_HEIGHT],
-    outputRange: [0, -HEADER_HEIGHT],
-    extrapolate: "clamp",
-  });
-
-  const categories = [
-    "All",
-    ...new Set(challenges.map((item) => item.category)),
-  ];
-
-  const filteredChallenges =
-    selectedCategory === "All"
-      ? challenges
-      : challenges.filter((item) => item.category === selectedCategory);
-
-  const featuredChallenge = filteredChallenges.find((item) => item.isFeatured);
-  const regularChallenges = filteredChallenges.filter(
-    (item) => !item.isFeatured
-  );
-
-  const toggleFavorite = (id) => {
-    if (favorite.includes(id)) {
-      setFavorite(favorite.filter((item) => item !== id));
-    } else {
-      setFavorite([...favorite, id]);
+  // ── GET: ambil semua challenge dari API ──────────────────────
+  const fetchChallenges = async () => {
+    try {
+      const response = await getChallenges();
+      setChallenges(response.data);
+    } catch (error) {
+      console.error("Gagal mengambil data challenges:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  return (
-    <View style={styles.wrapper}>
-      {/* Header dengan animasi slide ke atas saat scroll */}
-      <Animated.View
-        style={[
-          styles.floatingHeader,
-          { transform: [{ translateY: headerTranslateY }] },
-        ]}
-      >
-        <Header />
-        <CategoryList
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-        />
-      </Animated.View>
+  // Jalankan GET setiap kali layar mendapat fokus
+  useFocusEffect(
+    useCallback(() => {
+      fetchChallenges();
+    }, [])
+  );
 
-      {/* ScrollView dengan Animated agar scroll terhubung ke animasi */}
-      <Animated.ScrollView
-        style={styles.container}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingTop: HEADER_HEIGHT + 80 }}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: true }
-        )}
-        scrollEventThrottle={16}
-      >
-        {featuredChallenge && (
-          <View style={styles.featuredSection}>
-            <Text style={styles.sectionTitle}>Featured Challenge</Text>
-            <FeaturedCard challenge={featuredChallenge} />
-          </View>
-        )}
-        <View style={styles.challengeSection}>
-          <Text style={styles.sectionTitle}>All Challenges</Text>
-          <Animated.ScrollView
+  // Pull-to-refresh
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchChallenges().finally(() => setRefreshing(false));
+  }, []);
+
+  const categories = ["All", ...new Set(challenges.map((c) => c.category))];
+  const filteredChallenges =
+    selectedCategory === "All"
+      ? challenges
+      : challenges.filter((c) => c.category === selectedCategory);
+  const featuredChallenge = filteredChallenges.find((c) => c.isFeatured);
+  const regularChallenges = filteredChallenges.filter((c) => !c.isFeatured);
+
+  const toggleFavorite = (id) =>
+    setFavorite((prev) =>
+      prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]
+    );
+
+  if (loading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
+  return (
+    <ScrollView
+      style={styles.container}
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={[colors.primary]}
+        />
+      }
+    >
+      <Header />
+      <CategoryList
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+      />
+
+      {featuredChallenge && (
+        <View style={styles.featuredSection}>
+          <Text style={styles.sectionTitle}>Featured Challenge</Text>
+          <FeaturedCard challenge={featuredChallenge} />
+        </View>
+      )}
+
+      <View style={styles.challengeSection}>
+        <Text style={styles.sectionTitle}>All Challenges</Text>
+        {regularChallenges.length === 0 ? (
+          <Text style={styles.emptyText}>Belum ada challenge tersedia.</Text>
+        ) : (
+          <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.horizontalList}
@@ -104,48 +113,20 @@ export default function HomeScreen() {
                 />
               </View>
             ))}
-          </Animated.ScrollView>
-        </View>
-      </Animated.ScrollView>
-    </View>
+          </ScrollView>
+        )}
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  floatingHeader: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1000,
-    backgroundColor: colors.background,
-    elevation: 4,
-  },
-  container: {
-    flex: 1,
-  },
-  featuredSection: {
-    paddingHorizontal: 20,
-    marginBottom: 30,
-  },
-  challengeSection: {
-    marginBottom: 30,
-  },
-  sectionTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 16,
-    paddingHorizontal: 20,
-  },
-  horizontalList: {
-    paddingHorizontal: 20,
-    gap: 16,
-  },
-  cardWrapper: {
-    width: 300,
-  },
+  container: { flex: 1, backgroundColor: colors.background },
+  centered: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: colors.background },
+  featuredSection: { paddingHorizontal: 20, marginBottom: 30 },
+  challengeSection: { marginBottom: 30 },
+  sectionTitle: { fontSize: 22, fontWeight: "bold", marginBottom: 16, paddingHorizontal: 20 },
+  horizontalList: { paddingHorizontal: 20, gap: 16 },
+  cardWrapper: { width: 300 },
+  emptyText: { paddingHorizontal: 20, color: "#999", fontSize: 14 },
 });

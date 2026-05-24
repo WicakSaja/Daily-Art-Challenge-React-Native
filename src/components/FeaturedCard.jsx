@@ -36,18 +36,12 @@ export default function FeaturedCard({
         <TouchableOpacity
                   activeOpacity={0.9}
                   onPress={() =>
-                    navigation.navigate(
-                      "ChallengeDetail",
-                      {
-                        challenge: challenge,
-                      }
-                    )
+                    navigation.navigate("ChallengeDetail", { challengeId: challenge.id })
                   }
                 >
-                  <Text style={styles.favoriteText}>
-                    Detail
-                  </Text>
+                  <Text style={styles.detailText}>Detail</Text>
                 </TouchableOpacity>
+                
         </View>
       </View>
     </ImageBackground>
@@ -84,7 +78,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  favoriteText: {
+  detailText: {
     fontWeight: "600",
     color: "white",
   },

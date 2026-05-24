@@ -1,8 +1,8 @@
-// screens/AddChallengeForm.jsx
-// Mengirim challenge baru ke REST API menggunakan metode POST.
-// Form dilengkapi validasi, loading overlay, dan ActivityIndicator.
+// screens/EditChallengeScreen.jsx
+// Mengambil data challenge yang ada via GET (prefill form),
+// lalu mengirim perubahan ke REST API menggunakan metode PUT.
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -20,12 +20,13 @@ import {
 import { ArrowLeft } from "lucide-react-native";
 import { useNavigation } from "@react-navigation/native";
 import colors from "../styles/colors";
-import { postChallenge } from "../utils/api";
+import { getChallengeById, putChallenge } from "../utils/api";
 
 const CATEGORIES = ["Sketsa", "Lukisan", "Digital Art", "Fotografi", "Kolase", "Ilustrasi"];
 const LEVELS     = ["Beginner", "Intermediate", "Advanced"];
 
-export default function AddChallengeForm() {
+export default function EditChallengeScreen({ route }) {
+  const { challengeId } = route.params;
   const navigation = useNavigation();
 
   const [formData, setFormData] = useState({
@@ -35,43 +36,70 @@ export default function AddChallengeForm() {
     category: "",
     level: "",
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving]   = useState(false);
+
+  // ── GET: ambil data lama untuk prefill form ─────────────────
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getChallengeById(challengeId);
+        const data = response.data;
+        setFormData({
+          title:       data.title       || "",
+          description: data.description || "",
+          image:       data.image       || "",
+          category:    data.category    || "",
+          level:       data.level       || "",
+        });
+      } catch (error) {
+        console.error("Gagal mengambil data challenge:", error);
+        Alert.alert("Error", "Gagal memuat data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [challengeId]);
 
   const handleChange = (key, value) =>
     setFormData((prev) => ({ ...prev, [key]: value }));
 
   const isFormValid =
-    formData.title.trim() &&
-    formData.description.trim() &&
-    formData.category &&
-    formData.level;
+    formData.title.trim() && formData.description.trim() && formData.category && formData.level;
 
-  // ── POST: kirim data challenge baru ke API ──────────────────
-  const handleUpload = async () => {
+  // ── PUT: kirim data yang sudah diubah ke API ─────────────────
+  const handleUpdate = async () => {
     if (!isFormValid) {
-      Alert.alert("Perhatian", "Harap lengkapi semua field yang wajib diisi.");
+      Alert.alert("Perhatian", "Harap lengkapi semua field wajib.");
       return;
     }
-    setLoading(true);
+    setSaving(true);
     try {
-      await postChallenge({
+      await putChallenge(challengeId, {
         title:       formData.title,
         description: formData.description,
         image:       formData.image,
         category:    formData.category,
         level:       formData.level,
-        isFeatured:  false,
-        createdAt:   new Date().toISOString(),
       });
-      // Kembali ke Home agar data langsung refresh via useFocusEffect
-      navigation.navigate("Main", { screen: "Home" });
+      // Kembali ke detail, detail screen akan GET ulang data terbaru
+      navigation.navigate("ChallengeDetail", { challengeId });
     } catch (error) {
-      console.error("Gagal mengirim challenge:", error);
-      Alert.alert("Error", "Gagal mengirim challenge. Coba lagi.");
+      console.error("Gagal memperbarui challenge:", error);
+      Alert.alert("Error", "Gagal memperbarui challenge. Coba lagi.");
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
+
+  if (loading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -86,7 +114,7 @@ export default function AddChallengeForm() {
               <ArrowLeft color="#222" size={24} />
             </TouchableOpacity>
             <View style={{ flex: 1, alignItems: "center" }}>
-              <Text style={styles.headerTitle}>Tambah Challenge</Text>
+              <Text style={styles.headerTitle}>Edit Challenge</Text>
             </View>
           </View>
 
@@ -96,7 +124,7 @@ export default function AddChallengeForm() {
               <Text style={styles.label}>Judul *</Text>
               <View style={styles.inputBox}>
                 <TextInput
-                  placeholder="Contoh: Sketsa Wajah Realistis"
+                  placeholder="Judul challenge"
                   placeholderTextColor="#bbb"
                   value={formData.title}
                   onChangeText={(t) => handleChange("title", t)}
@@ -112,7 +140,7 @@ export default function AddChallengeForm() {
               <Text style={styles.label}>Deskripsi *</Text>
               <View style={[styles.inputBox, { minHeight: 110 }]}>
                 <TextInput
-                  placeholder="Jelaskan detail challenge..."
+                  placeholder="Deskripsi challenge"
                   placeholderTextColor="#bbb"
                   value={formData.description}
                   onChangeText={(t) => handleChange("description", t)}
@@ -126,7 +154,7 @@ export default function AddChallengeForm() {
 
             {/* URL Gambar */}
             <View style={styles.fieldGroup}>
-              <Text style={styles.label}>URL Gambar (opsional)</Text>
+              <Text style={styles.label}>URL Gambar</Text>
               <View style={styles.inputBox}>
                 <TextInput
                   placeholder="https://example.com/image.jpg"
@@ -180,20 +208,20 @@ export default function AddChallengeForm() {
             </View>
           </ScrollView>
 
-          {/* Bottom bar tombol kirim */}
+          {/* Tombol Update */}
           <View style={styles.bottomBar}>
             <TouchableOpacity
-              style={[styles.submitButton, !isFormValid && styles.submitDisabled]}
-              onPress={handleUpload}
-              disabled={!isFormValid || loading}
+              style={[styles.updateButton, !isFormValid && styles.updateDisabled]}
+              onPress={handleUpdate}
+              disabled={!isFormValid || saving}
               activeOpacity={0.8}
             >
-              <Text style={styles.submitText}>Kirim Challenge</Text>
+              <Text style={styles.updateText}>Simpan Perubahan</Text>
             </TouchableOpacity>
           </View>
 
-          {/* Loading overlay saat POST sedang berlangsung */}
-          {loading && (
+          {/* Loading overlay saat PUT sedang berlangsung */}
+          {saving && (
             <View style={styles.loadingOverlay}>
               <ActivityIndicator size="large" color={colors.primary} />
             </View>
@@ -206,6 +234,7 @@ export default function AddChallengeForm() {
 
 const styles = StyleSheet.create({
   container:      { flex: 1, backgroundColor: colors.background },
+  centered:       { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: colors.background },
   header:         { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 55, paddingBottom: 14, backgroundColor: colors.background, elevation: 3 },
   headerTitle:    { fontSize: 16, fontWeight: "bold", color: "#222" },
   formContent:    { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 20, gap: 20 },
@@ -220,8 +249,8 @@ const styles = StyleSheet.create({
   chipText:       { fontSize: 13, color: "#555", fontWeight: "500" },
   chipTextActive: { color: "white" },
   bottomBar:      { padding: 16, paddingBottom: 24, backgroundColor: colors.background, elevation: 8 },
-  submitButton:   { backgroundColor: colors.primary, paddingVertical: 15, borderRadius: 30, alignItems: "center" },
-  submitDisabled: { opacity: 0.45 },
-  submitText:     { color: "white", fontWeight: "bold", fontSize: 16 },
+  updateButton:   { backgroundColor: colors.primary, paddingVertical: 15, borderRadius: 30, alignItems: "center" },
+  updateDisabled: { opacity: 0.45 },
+  updateText:     { color: "white", fontWeight: "bold", fontSize: 16 },
   loadingOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.35)", justifyContent: "center", alignItems: "center" },
 });
