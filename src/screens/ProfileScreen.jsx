@@ -1,55 +1,96 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import {
   View,
   Text,
   Image,
   StyleSheet,
+  Animated,
 } from "react-native";
 import { profile } from "../data/profile";
 import colors from "../styles/colors";
 
+// Komponen stat box dengan animasi fade + slide dari bawah
+function AnimatedStatBox({ number, label, delay }) {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        delay: delay,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 500,
+        delay: delay,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
+  return (
+    <Animated.View
+      style={[
+        styles.statBox,
+        {
+          opacity: fadeAnim,
+          transform: [{ translateY: slideAnim }],
+        },
+      ]}
+    >
+      <Text style={styles.statNumber}>{number}</Text>
+      <Text style={styles.statLabel}>{label}</Text>
+    </Animated.View>
+  );
+}
+
 export default function ProfileScreen() {
+  // Animasi fade + scale pada avatar saat layar muncul
+  const avatarScaleAnim = useRef(new Animated.Value(0.7)).current;
+  const avatarFadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.spring(avatarScaleAnim, {
+        toValue: 1,
+        friction: 4,
+        tension: 60,
+        useNativeDriver: true,
+      }),
+      Animated.timing(avatarFadeAnim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image
-          source={{
-            uri: profile.avatar,
-          }}
-          style={styles.avatar}
+        {/* Avatar dengan animasi scale + fade saat masuk */}
+        <Animated.Image
+          source={{ uri: profile.avatar }}
+          style={[
+            styles.avatar,
+            {
+              opacity: avatarFadeAnim,
+              transform: [{ scale: avatarScaleAnim }],
+            },
+          ]}
         />
-        <Text style={styles.name}>
-          {profile.name}
-        </Text>
-        <Text style={styles.bio}>
-          {profile.bio}
-        </Text>
+        <Text style={styles.name}>{profile.name}</Text>
+        <Text style={styles.bio}>{profile.bio}</Text>
       </View>
+
+      {/* Stat box masing-masing muncul dengan delay berbeda (stagger) */}
       <View style={styles.statsContainer}>
-        <View style={styles.statBox}>
-          <Text style={styles.statNumber}>
-            25
-          </Text>
-          <Text style={styles.statLabel}>
-            Challenges
-          </Text>
-        </View>
-        <View style={styles.statBox}>
-          <Text style={styles.statNumber}>
-            12
-          </Text>
-          <Text style={styles.statLabel}>
-            Favorites
-          </Text>
-        </View>
-        <View style={styles.statBox}>
-          <Text style={styles.statNumber}>
-            8
-          </Text>
-          <Text style={styles.statLabel}>
-            Completed
-          </Text>
-        </View>
+        <AnimatedStatBox number={25} label="Challenges" delay={100} />
+        <AnimatedStatBox number={12} label="Favorites" delay={250} />
+        <AnimatedStatBox number={8} label="Completed" delay={400} />
       </View>
     </View>
   );
