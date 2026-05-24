@@ -90,15 +90,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
-  favoriteButton: {
-    marginTop: 20,
-    alignSelf: "flex-start",
-    backgroundColor: "#F3F3F3",
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 20,
-  },
-
   favoriteText: {
     fontWeight: "600",
   },

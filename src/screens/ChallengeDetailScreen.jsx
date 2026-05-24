@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   View,
   Text,
@@ -10,21 +9,15 @@ import {
 import StartButton from "../components/StartButton";
 import FavoriteButton from "../components/FavoriteButton";
 import { useState } from "react";
-export default function ChallengeDetailScreen({
-  route,
-}) {
-
+export default function ChallengeDetailScreen({route}) {
 
   const { challenge } = route.params;
   const [isFavorite, setIsFavorite] = useState(false);
-
   const handleFavorite = () => {
     setIsFavorite((prev) => !prev);
   };
 
   return (
-
-
     <ScrollView style={styles.container}>
       <Image
         source={{ uri: challenge.image }}
@@ -43,16 +36,14 @@ export default function ChallengeDetailScreen({
         <Text style={styles.description}>
           {challenge.description}
         </Text>
-        <FavoriteButton isFavorite={isFavorite} onPress={handleFavorite} />
       </View>
+      <FavoriteButton isFavorite={isFavorite} onPress={handleFavorite} />
       <StartButton />
     </ScrollView>
-
   );
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -90,5 +81,4 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     color: "#555",
   },
-
 });

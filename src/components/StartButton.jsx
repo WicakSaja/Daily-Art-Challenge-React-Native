@@ -13,7 +13,8 @@ export default function StartButton() {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.primary,
-    margin: 20,
+    marginHorizontal: 20,
+    margin: 5,
     padding: 15,
     borderRadius: 30,
     alignItems: "center",

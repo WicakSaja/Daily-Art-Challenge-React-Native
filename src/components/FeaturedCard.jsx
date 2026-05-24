@@ -1,31 +1,54 @@
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
+  TouchableOpacity,
   ImageBackground,
   StyleSheet,
 } from "react-native";
+
 export default function FeaturedCard({
-  title,
-  category,
-  image,
+  challenge,
 }) {
+
+  const navigation = useNavigation();
+
   return (
     <ImageBackground
-      source={{ uri: image }}
+      source={{ uri: challenge.image }}
       style={styles.card}
       imageStyle={styles.image}
     >
       <View style={styles.overlay}>
+       <View style={styles.Container}>
         <Text style={styles.badge}>
           FEATURED TODAY
         </Text>
         <Text style={styles.category}>
-          {category}
+          {challenge.category}
         </Text>
         <Text style={styles.title}>
-          {title}
+          {challenge.title}
         </Text>
+        </View>
+        <View style={styles.buttonContainer}>
+        <TouchableOpacity
+                  activeOpacity={0.9}
+                  onPress={() =>
+                    navigation.navigate(
+                      "ChallengeDetail",
+                      {
+                        challenge: challenge,
+                      }
+                    )
+                  }
+                >
+                  <Text style={styles.favoriteText}>
+                    Detail
+                  </Text>
+                </TouchableOpacity>
+        </View>
       </View>
     </ImageBackground>
   );
@@ -41,9 +64,9 @@ const styles = StyleSheet.create({
   },
   overlay: {
     padding: 24,
-    backgroundColor:
-      "rgba(0,0,0,0.35)",
+    backgroundColor: "rgba(0,0,0,0.35)",
     borderRadius: 28,
+    position: "relative",
   },
   badge: {
     color: "white",
@@ -59,5 +82,16 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 30,
     fontWeight: "bold",
+  },
+
+  favoriteText: {
+    fontWeight: "600",
+    color: "white",
+  },
+
+  buttonContainer: {
+    position: "absolute",
+    right: 24,
+    bottom: 24,
   },
 });

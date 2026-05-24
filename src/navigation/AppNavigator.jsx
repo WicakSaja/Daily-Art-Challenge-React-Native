@@ -13,8 +13,8 @@ import {
   Heart as Favorite,
   User,
 } from "lucide-react-native";
-const Stack = createNativeStackNavigator();
 
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {

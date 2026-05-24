@@ -61,7 +61,7 @@ export const challenges = [
     image:
       "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df",
     isFeatured: false,
-    description: "Melukis pemandangan kota dengan perspektif dan cahaya.",
+    description: "Melukis pemandangan kota dengan perspektif dan cahaya. lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
 
   {
