@@ -1,7 +1,3 @@
-// screens/RegisterScreen.jsx
-// Registrasi menggunakan Supabase Auth (signUp) lalu menyimpan
-// profil pengguna ke tabel "users" di Supabase Database.
-
 import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,

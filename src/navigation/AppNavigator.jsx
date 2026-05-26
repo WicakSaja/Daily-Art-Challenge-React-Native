@@ -1,7 +1,3 @@
-// navigation/AppNavigator.jsx
-// Tidak ada perubahan struktur dibanding BAB 8.
-// Disertakan ulang agar lengkap.
-
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';

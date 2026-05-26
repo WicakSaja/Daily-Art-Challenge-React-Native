@@ -1,7 +1,3 @@
-// screens/EditChallengeScreen.jsx
-// Prefill form dari Supabase Database (SELECT), lalu UPDATE data challenge.
-// Jika gambar diganti, upload gambar baru ke Supabase Storage terlebih dahulu.
-
 import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,

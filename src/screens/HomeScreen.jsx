@@ -1,6 +1,3 @@
-// screens/HomeScreen.jsx
-// Mengambil daftar challenge dari Supabase Database (SELECT dari tabel "challenges").
-
 import React, { useState, useCallback } from 'react';
 import {
   ScrollView, StyleSheet, Text, View,

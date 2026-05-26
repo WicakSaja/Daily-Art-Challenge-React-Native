@@ -1,8 +1,3 @@
-// screens/AddChallengeForm.jsx
-// Mengirim challenge baru ke Supabase Database (INSERT ke tabel "challenges").
-// Gambar diunggah ke Supabase Storage (bucket: "challenge-images")
-// lalu public URL-nya disimpan di kolom "image" tabel challenges.
-
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,

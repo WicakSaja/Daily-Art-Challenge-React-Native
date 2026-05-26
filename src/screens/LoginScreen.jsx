@@ -1,7 +1,3 @@
-// screens/LoginScreen.jsx
-// Login menggunakan Supabase Auth (signInWithPassword).
-// Token disimpan di AsyncStorage agar sesi bertahan saat app ditutup.
-
 import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,

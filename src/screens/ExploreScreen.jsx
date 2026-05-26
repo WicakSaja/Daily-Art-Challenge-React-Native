@@ -1,6 +1,3 @@
-// screens/ExploreScreen.jsx
-// SELECT semua challenge dari Supabase untuk tampilan grid.
-
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, StyleSheet, ScrollView,
